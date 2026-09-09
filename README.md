@@ -9,6 +9,27 @@ stdlib-only core surrounded by swappable adapters.
 
 ## Why hexagonal
 
+```
+              dependencies point INWARD
+                        v v
++-----------------------------------------------------------+
+|  cmd/api/main.go   composition root: the only wiring      |
++-----------------------------------------------------------+
+        |                                        |
++-------v---------+                    +---------v----------+
+| INBOUND          |                   | OUTBOUND            |
+| http (chi)       |--- drives ------->| ollama              |
+| handlers + DTOs  |                   | pgvector · loader   |
++-------+----------+                   +---------+----------+
+        | defines narrow                     | implement
+        | consumer interfaces                | the ports
++-------v--------------------------------------v----------+
+|  CORE (zero third-party dependencies)                    |
+|  application: IndexDocument, AnswerQuery, chunker, prompt|
+|  domain: entities, sentinel errors, ports (interfaces)   |
++----------------------------------------------------------+
+```
+
 The dependency rule: everything points inward. `internal/domain` and
 `internal/application` hold the entities, errors, use cases, chunking, and
 prompt building, and they import **zero third-party packages** — only the Go
