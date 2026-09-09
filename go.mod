@@ -3,6 +3,7 @@ module github.com/R0LM0/go-rag-api
 go 1.25.0
 
 require (
+	github.com/go-chi/chi/v5 v5.3.2
 	github.com/jackc/pgx/v5 v5.11.0
 	github.com/pgvector/pgvector-go v0.4.1
 	github.com/pgvector/pgvector-go/pgx v0.4.1
