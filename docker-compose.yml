@@ -1,0 +1,23 @@
+# Postgres with the pgvector extension for the RAG API.
+# Ollama is NOT containerized here: it runs natively on the host and the
+# application reaches it directly at OLLAMA_URL (default http://localhost:11434).
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: go-rag-api-db
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag
+      POSTGRES_DB: rag
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
